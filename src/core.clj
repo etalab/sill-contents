@@ -15,6 +15,7 @@
 (defonce sill-url "https://raw.githubusercontent.com/DISIC/sill/master/2020/sill-2020.csv")
 (defonce wikidata-base-url "https://www.wikidata.org/wiki/Special:EntityData/")
 (defonce wikidata-base-image-url "https://commons.wikimedia.org/wiki/File:")
+(defonce sill-contributors-url "https://raw.githubusercontent.com/DISIC/sill/master/2020/sill-2020-contributeurs.csv")
 
 ;; Keywords to ignore
 ;; "parent"
@@ -35,6 +36,13 @@
                    :annees            :y})
 
 (def http-get-params {:cookie-policy :standard})
+
+(defn sill-contributors-to-json []
+  (spit "sill-contributors.json"
+        (json/generate-string
+         (try (semantic-csv/slurp-csv sill-contributors-url)
+              (catch Exception e
+                (println "Cannot reach SILL csv URL"))))))
 
 (defn get-sill []
   (map #(clojure.set/rename-keys
@@ -80,7 +88,6 @@
 ;; - P275: license
 ;; - P18: image
 ;; - P306: operating system (linux Q388, macosx Q14116, windows Q1406)
-
 (defn sill-plus-wikidata []
   (for [entry (get-sill)]
     (-> (if-let [w (not-empty (:w entry))]
@@ -103,6 +110,7 @@
         (dissoc :w))))
 
 (defn -main [& args]
+  (sill-contributors-to-json)
   (spit "sill.json"
         (json/generate-string
          (sill-plus-wikidata)))
