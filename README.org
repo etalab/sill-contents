@@ -15,10 +15,10 @@ wikidata additional information.
 
 Assuming GraalVM >19.3 is installed:
 
-: clojure -A:native-image
+: clj -A:native-image
 
 * License
 
-2019-2020 DINUM, Bastien Guerry.
+2020 DINUM, Bastien Guerry.
 
 This application is published under the EPL 2.0 license.
