@@ -8,6 +8,7 @@
              [clj-http.lite.client :as http]
              [ring.util.codec :as codec]
              [clojure.string :as s]
+             [clojure.set]
              [hickory.core :as h]
              [hickory.select :as hs])
   (:gen-class))
