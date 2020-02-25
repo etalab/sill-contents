@@ -1,4 +1,5 @@
 .cpcache/
 classes/
-sill.json
+.nrepl-port
+*.json
 sill-plus-wikidata
