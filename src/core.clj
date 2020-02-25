@@ -112,6 +112,7 @@
 
 (defn -main [& args]
   (sill-contributors-to-json)
+  (println "Updated sill-contributors.json")
   (spit "sill.json"
         (json/generate-string
          (sill-plus-wikidata)))
