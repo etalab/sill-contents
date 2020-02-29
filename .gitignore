@@ -3,3 +3,4 @@ classes/
 .nrepl-port
 *.json
 sill-plus-wikidata
+.eastwood
