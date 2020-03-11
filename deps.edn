@@ -1,4 +1,10 @@
-{:deps {org.clojure/clojure             {:mvn/version "1.10.1"}
+{:version     "0.1.0"
+ :description "Generate data for https://sill.etalab.gouv.fr"
+ :url         "https://github.com/etalab/codegouvfr-data"
+ :license     {:name "Eclipse Public License - v 2.0"
+               :url  "http://www.eclipse.org/legal/epl-v20.html"}
+
+ :deps {org.clojure/clojure             {:mvn/version "1.10.1"}
         org.martinklepsch/clj-http-lite {:mvn/version "0.4.3"}
         hickory                         {:mvn/version "0.7.1"}
         semantic-csv                    {:mvn/version "0.2.0"}
@@ -16,7 +22,7 @@
                         ;; Display backtraces
                         "-H:+ReportExceptionStackTraces"
                         ;; Optional native image name override
-                        "-H:Name=sill-plus-wikidata"]
+                        "-H:Name=sill-data"]
             :jvm-opts  ["-Dclojure.compiler.direct-linking=true"]
             :extra-deps
             {clj.native-image
