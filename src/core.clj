@@ -118,13 +118,12 @@
                               :labelFontSize 15
                               :labelAlign    "right"}}
               :color {:field  "License"
-                      :legend false
+                      :legend {:title "Licenses"}
                       :type   "nominal"
-                      :title  "Licenses"
                       :scale  {:scheme "tableau20"}}}
    :width    1200
    :height   600
-   :mark     {:type "bar"}})
+   :mark     {:type "bar" :tooltip {:content "data"}}})
 
 (defn vega-licenses-chart! [entries]
   (let [entries-2020
@@ -146,12 +145,13 @@
                               :labelAngle 0}}
               :y     {:field "count" :type "quantitative"
                       :axis  {:title "Number of free software"}}
-              :color {:field "year"
-                      :type  "nominal"
-                      :scale {:scheme "tableau20"}}}
+              :color {:field  "year"
+                      :type   "nominal"
+                      :legend {:title "Year"}
+                      :scale  {:scheme "tableau20"}}}
    :width    1200
    :height   600
-   :mark     {:type "bar"}})
+   :mark     {:type "bar" :tooltip {:content "data"}}})
 
 (defn vega-years-chart! [entries]
   (let [years (map (fn [[a b]] {:year a :count b})
