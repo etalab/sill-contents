@@ -55,6 +55,7 @@
 ;; "parent"
 ;; "formats"
 (def sill-mapping {:statut            :s
+                   :public            :a
                    :fonction          :f
                    :contexte-usage    :u
                    :comptoir-du-libre :co
