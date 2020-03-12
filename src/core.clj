@@ -116,7 +116,8 @@
       (re-find #"^EPL" (:l e))
       (re-find #"^Artistic" (:l e))
       (re-find #"^CPA" (:l e))
-      (re-find #"^CC" (:l e))))
+      (re-find #"^CC" (:l e))
+      (re-find #"^CECILL" (:l e))))
 
 (defn vega-chart! [entries]
   (let [entries-2020 (filter #(re-find #"2020" (:y %)) entries)
@@ -207,6 +208,7 @@
     (spit "sill.json"
           (json/generate-string
            (sill-plus-wikidata entries)))
-    (println "Updated sill.json")))
+    (println "Updated sill.json")
+    (System/exit 0)))
 
 ;; (-main)
