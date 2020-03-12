@@ -85,14 +85,13 @@
     [["2018" y2018] ["2019" y2019] ["2020" y2020]]))
 
 (defn sill-stats [entries]
-  (let [by-year      (get-years-count entries)
-        entries-2020 (filter #(re-find #"2020" (:y %)) entries)
+  (let [entries-2020 (filter #(re-find #"2020" (:y %)) entries)
         by-license   (group-by :l entries-2020)
         by-status    (group-by :s entries-2020)
         by-group     (group-by :g entries-2020)]
     (letfn [(cnt [m] (map (fn [[k v]] [k (count v)]) m))]
       {:total    (count entries-2020)
-       :years    (cnt by-year)
+       :years    (get-years-count entries)
        :licenses (cnt by-license)
        :status   (cnt by-status)
        :group    (cnt by-group)})))
@@ -140,16 +139,16 @@
            "sill-licenses.svg")))
 
 (defn vega-years-spec [years]
-  {:title    "Number of recommended solutions per year"
+  {:title    "Recommended free software solutions for the french public sector"
    :data     {:values years}
-   :encoding {:x {:field "year" :type "ordinal"
-                  :axis  {:title "Number of software"}}
-              :y {:field "count" :type "quantitative"
-                  :step  "year"
-                  :axis  {:title "Year"}}}
-   :color    {:field "year"
-              :type  "nominal"
-              :scale {:scheme "tableau20"}}
+   :encoding {:x     {:field "year" :type "ordinal"
+                      :axis  {:title      "Year"
+                              :labelAngle 0}}
+              :y     {:field "count" :type "quantitative"
+                      :axis  {:title "Number of free software"}}
+              :color {:field "year"
+                      :type  "nominal"
+                      :scale {:scheme "tableau20"}}}
    :width    1200
    :height   600
    :mark     {:type "bar"}})
@@ -237,8 +236,8 @@
     (println "Updated sill-licenses.svg")
     (vega-years-chart! entries)
     (println "Updated sill-years.svg")
-    (spit "sill.json"
-          (json/generate-string
-           (sill-plus-wikidata entries)))
-    (println "Updated sill.json")
+    ;; (spit "sill.json"
+    ;;       (json/generate-string
+    ;;        (sill-plus-wikidata entries)))
+    ;; (println "Updated sill.json")
     (System/exit 0)))
