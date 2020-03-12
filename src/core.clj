@@ -192,9 +192,9 @@
            :content))))
 
 (defn wd-get-first-value
-"Get the first value of list of claims for property p."
-[p claims]
-(:value (:datavalue (:mainsnak (first (p claims))))))
+  "Get the first value of list of claims for property p."
+  [p claims]
+  (:value (:datavalue (:mainsnak (first (p claims))))))
 
 ;; Other properties to consider:
 ;; - P178: developer
