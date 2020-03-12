@@ -24,21 +24,25 @@
 ;; Keywords to ignore
 ;; "parent"
 ;; "formats"
-(def sill-mapping {:statut            :s
-                   :public            :a
-                   :fonction          :f
-                   :contexte-usage    :u
-                   :comptoir-du-libre :co
-                   :similaire-a       :si
-                   :licence           :l
-                   :ID                :id
-                   :secteur           :se
-                   :composant         :c
-                   :version           :v
-                   :wikidata          :w
-                   :nom               :i
-                   :groupe            :g
-                   :annees            :y})
+(def sill-mapping
+  {
+   :ID                :id
+   :annees            :y
+   :composant         :c
+   :comptoir-du-libre :co
+   :contexte-usage    :u
+   :fonction          :f
+   :groupe            :g
+   :licence           :l
+   :nom               :i
+   :parent            :p
+   :public            :a
+   :secteur           :se
+   :similaire-a       :si
+   :statut            :s
+   :version           :v
+   :wikidata          :w
+   })
 
 (def http-get-params {:cookie-policy :standard})
 
