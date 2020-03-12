@@ -21,36 +21,6 @@
 (defonce wikidata-base-image-url "https://commons.wikimedia.org/wiki/File:")
 (defonce sill-contributors-url "https://raw.githubusercontent.com/DISIC/sill/master/2020/sill-2020-contributeurs.csv")
 
-(defn- temp-json-file
-  "Convert `clj-vega-spec` to json and store it as tmp file."
-  [clj-vega-spec]
-  (let [tmp-file (java.io.File/createTempFile "vega." ".json")]
-    (.deleteOnExit tmp-file)
-    (with-open [file (io/writer tmp-file)]
-      (datajson/write clj-vega-spec file))
-    (.getAbsolutePath tmp-file)))
-
-(defn vega-spec [licenses]
-  {:title    "License distribution of recommended free software for the french public sector"
-   :data     {:values licenses}
-   :encoding {:x     {:field "Number" :type "quantitative"
-                      :axis  {:title "Number of software"}}
-              :y     {:field "License" :type "ordinal" :sort "-x"
-                      :axis  {:title         false
-                              :labelLimit    200
-                              :offset        10
-                              :maxExtent     100
-                              :labelFontSize 15
-                              :labelAlign    "right"}}
-              :color {:field  "License"
-                      :legend false
-                      :type   "nominal"
-                      :title  "Licenses"
-                      :scale  {:scheme "tableau20"}}}
-   :width    1200
-   :height   600
-   :mark     {:type "bar"}})
-
 ;; Keywords to ignore
 ;; "parent"
 ;; "formats"
@@ -78,7 +48,7 @@
   (spit "sill-contributors.json"
         (json/generate-string
          (try (semantic-csv/slurp-csv sill-contributors-url)
-              (catch Exception e
+              (catch Exception _
                 (println "Cannot reach SILL csv URL"))))))
 
 (defn get-sill-entries
@@ -89,23 +59,10 @@
          (select-keys % (keys sill-mapping))
          sill-mapping)
        (try (semantic-csv/slurp-csv sill-url)
-            (catch Exception e
+            (catch Exception _
               (println "Cannot reach SILL csv URL")))))
 
-(defn sill-stats [entries]
-  (let [entries-2020 (filter #(re-find #"2020" (:y %)) entries)
-        by-license   (group-by :l entries-2020)
-        by-status    (group-by :s entries-2020)
-        by-group     (group-by :g entries-2020)]
-    {:total    (count entries-2020)
-     :licenses (map (fn [[k v]] [k (count v)])
-                    by-license)
-     :status   (map (fn [[k v]] [k (count v)])
-                    by-status)
-     :group    (map (fn [[k v]] [k (count v)])
-                    by-group)}))
-
-(defn entries-group-fn [e]
+(defn group-by-licenses-family [e]
   (or (re-find #"^GPL-3" (:l e))
       (re-find #"^GPL-2" (:l e))
       (re-find #"^LGPL-2" (:l e))
@@ -120,16 +77,88 @@
       (re-find #"^CC" (:l e))
       (re-find #"^CECILL" (:l e))))
 
-(defn vega-chart! [entries]
-  (let [entries-2020 (filter #(re-find #"2020" (:y %)) entries)
-        spec         (map (fn [[k v]]
-                            (let [k (if (= "" k) "Unspecified" k)]
-                              {:License k :Number (count v)}))
-                          (clojure.set/rename-keys
-                           (group-by entries-group-fn entries-2020)
-                           {nil "Unspecified"}))]
-    (sh/sh "vl2svg" (temp-json-file (vega-spec spec))
+(defn get-years-count [entries]
+  (let [all   (filter #(= (:s %) "R") entries)
+        y2018 (count (filter #(re-find #"2018" (:y %)) all))
+        y2019 (count (filter #(re-find #"2019" (:y %)) all))
+        y2020 (count (filter #(re-find #"2020" (:y %)) all))]
+    [["2018" y2018] ["2019" y2019] ["2020" y2020]]))
+
+(defn sill-stats [entries]
+  (let [by-year      (get-years-count entries)
+        entries-2020 (filter #(re-find #"2020" (:y %)) entries)
+        by-license   (group-by :l entries-2020)
+        by-status    (group-by :s entries-2020)
+        by-group     (group-by :g entries-2020)]
+    (letfn [(cnt [m] (map (fn [[k v]] [k (count v)]) m))]
+      {:total    (count entries-2020)
+       :years    (cnt by-year)
+       :licenses (cnt by-license)
+       :status   (cnt by-status)
+       :group    (cnt by-group)})))
+
+(defn- temp-json-file
+  "Convert `clj-vega-spec` to json and store it as tmp file."
+  [clj-vega-spec]
+  (let [tmp-file (java.io.File/createTempFile "vega." ".json")]
+    (.deleteOnExit tmp-file)
+    (with-open [file (io/writer tmp-file)]
+      (datajson/write clj-vega-spec file))
+    (.getAbsolutePath tmp-file)))
+
+(defn vega-licenses-spec [licenses]
+  {:title    "License distribution of recommended free software for the french public sector"
+   :data     {:values licenses}
+   :encoding {:x     {:field "Number" :type "quantitative"
+                      :axis  {:title "Number of software"}}
+              :y     {:field "License" :type "ordinal" :sort "-x"
+                      :axis  {:title         false
+                              :labelLimit    200
+                              :offset        10
+                              :maxExtent     100
+                              :labelFontSize 15
+                              :labelAlign    "right"}}
+              :color {:field  "License"
+                      :legend false
+                      :type   "nominal"
+                      :title  "Licenses"
+                      :scale  {:scheme "tableau20"}}}
+   :width    1200
+   :height   600
+   :mark     {:type "bar"}})
+
+(defn vega-licenses-chart! [entries]
+  (let [entries-2020
+        (filter #(re-find #"2020" (:y %)) entries)
+        spec (map (fn [[k v]]
+                    (let [k (if (= "" k) "Unspecified" k)]
+                      {:License k :Number (count v)}))
+                  (clojure.set/rename-keys
+                   (group-by group-by-licenses-family entries-2020)
+                   {nil "Unspecified"}))]
+    (sh/sh "vl2svg" (temp-json-file (vega-licenses-spec spec))
            "sill-licenses.svg")))
+
+(defn vega-years-spec [years]
+  {:title    "Number of recommended solutions per year"
+   :data     {:values years}
+   :encoding {:x {:field "year" :type "ordinal"
+                  :axis  {:title "Number of software"}}
+              :y {:field "count" :type "quantitative"
+                  :step  "year"
+                  :axis  {:title "Year"}}}
+   :color    {:field "year"
+              :type  "nominal"
+              :scale {:scheme "tableau20"}}
+   :width    1200
+   :height   600
+   :mark     {:type "bar"}})
+
+(defn vega-years-chart! [entries]
+  (let [years (map (fn [[a b]] {:year a :count b})
+                   (get-years-count entries))]
+    (sh/sh "vl2svg" (temp-json-file (vega-years-spec years))
+           "sill-years.svg")))
 
 (defn wd-get-data
   "For a wikidata entity, fetch data needed for the SILL."
@@ -137,7 +166,7 @@
   (when (not-empty entity)
     (-> (try (http/get (str wikidata-base-url entity ".json")
                        http-get-params)
-             (catch Exception e
+             (catch Exception _
                (println "Cannot reach Wikidata url")))
         :body
         (json/parse-string true)
@@ -152,7 +181,7 @@
                             (str wikidata-base-image-url
                                  (codec/url-encode f "UTF-8"))
                             http-get-params))
-                    (catch Exception e
+                    (catch Exception _
                       (println
                        (str "Can't reach image url for " f))))]
     (let [metas (-> src h/parse h/as-hickory
@@ -164,18 +193,18 @@
            :content))))
 
 (defn wd-get-first-value
-  "Get the first value of list of claims for property p."
-  [p claims]
-  (:value (:datavalue (:mainsnak (first (p claims))))))
+"Get the first value of list of claims for property p."
+[p claims]
+(:value (:datavalue (:mainsnak (first (p claims))))))
 
 ;; Other properties to consider:
 ;; - P178: developer
 ;; - P275: license
 ;; - P18: image
 ;; - P306: operating system (linux Q388, macosx Q14116, windows Q1406)
-(defn sill-plus-wikidata [entries]
+(defn sill-plus-wikidata
   "Spit sill.json by adding wikidata data."
-  []
+  [entries]
   (for [entry entries]
     (-> (if-let [w (not-empty (:w entry))]
           (let [data       (wd-get-data w)
@@ -196,7 +225,7 @@
           entry)
         (dissoc :w))))
 
-(defn -main [& args]
+(defn -main []
   (sill-contributors-to-json)
   (println "Updated sill-contributors.json")
   (let [entries (get-sill-entries)]
@@ -204,12 +233,12 @@
           (json/generate-string
            (sill-stats entries)))
     (println "Updated sill-stats.json")
-    (vega-chart! entries)
+    (vega-licenses-chart! entries)
     (println "Updated sill-licenses.svg")
+    (vega-years-chart! entries)
+    (println "Updated sill-years.svg")
     (spit "sill.json"
           (json/generate-string
            (sill-plus-wikidata entries)))
     (println "Updated sill.json")
     (System/exit 0)))
-
-;; (-main)
