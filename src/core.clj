@@ -3,14 +3,14 @@
 ;; License-Filename: LICENSE
 
 (ns core
-  (:require  [cheshire.core :as json]
-             [semantic-csv.core :as semantic-csv]
-             [clj-http.lite.client :as http]
-             [ring.util.codec :as codec]
-             [clojure.string :as s]
-             [clojure.set]
-             [hickory.core :as h]
-             [hickory.select :as hs])
+  (:require [cheshire.core :as json]
+            [semantic-csv.core :as semantic-csv]
+            [clj-http.lite.client :as http]
+            [ring.util.codec :as codec]
+            [clojure.string :as s]
+            [clojure.set]
+            [hickory.core :as h]
+            [hickory.select :as hs])
   (:gen-class))
 
 (defonce sill-url "https://raw.githubusercontent.com/DISIC/sill/master/2020/sill-2020.csv")
@@ -47,7 +47,7 @@
               (catch Exception e
                 (println "Cannot reach SILL csv URL"))))))
 
-(defn get-sill
+(defn get-sill-entries
   "Get SILL from `sill-url`.
   This is used before wikidata data have been fetched."
   []
@@ -57,6 +57,19 @@
        (try (semantic-csv/slurp-csv sill-url)
             (catch Exception e
               (println "Cannot reach SILL csv URL")))))
+
+(defn sill-stats [entries]
+  (let [entries-2020 (filter #(re-find #"2020" (:y %)) entries)
+        by-license   (group-by :l entries-2020)
+        by-status    (group-by :s entries-2020)
+        by-group     (group-by :g entries-2020)]
+    {:total    (count entries-2020)
+     :licenses (map (fn [[k v]] [k (count v)])
+                    by-license)
+     :status   (map (fn [[k v]] [k (count v)])
+                    by-status)
+     :group    (map (fn [[k v]] [k (count v)])
+                    by-group)}))
 
 (defn wd-get-data
   "For a wikidata entity, fetch data needed for the SILL."
@@ -100,10 +113,10 @@
 ;; - P275: license
 ;; - P18: image
 ;; - P306: operating system (linux Q388, macosx Q14116, windows Q1406)
-(defn sill-plus-wikidata
+(defn sill-plus-wikidata [entries]
   "Spit sill.json by adding wikidata data."
   []
-  (for [entry (get-sill)]
+  (for [entry entries]
     (-> (if-let [w (not-empty (:w entry))]
           (let [data       (wd-get-data w)
                 claims     (:claims data)
@@ -126,7 +139,12 @@
 (defn -main [& args]
   (sill-contributors-to-json)
   (println "Updated sill-contributors.json")
-  (spit "sill.json"
-        (json/generate-string
-         (sill-plus-wikidata)))
-  (println "Updated sill.json"))
+  (let [entries (get-sill-entries)]
+    (spit "sill-stats.json"
+          (json/generate-string
+           (sill-stats entries)))
+    (println "Updated sill-stats.json")
+    (spit "sill.json"
+          (json/generate-string
+           (sill-plus-wikidata entries)))
+    (println "Updated sill.json")))
