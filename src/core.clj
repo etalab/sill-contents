@@ -10,13 +10,46 @@
             [clojure.string :as s]
             [clojure.set]
             [hickory.core :as h]
-            [hickory.select :as hs])
+            [hickory.select :as hs]
+            [clojure.java.io :as io]
+            [clojure.java.shell :as sh]
+            [clojure.data.json :as datajson])
   (:gen-class))
 
 (defonce sill-url "https://raw.githubusercontent.com/DISIC/sill/master/2020/sill-2020.csv")
 (defonce wikidata-base-url "https://www.wikidata.org/wiki/Special:EntityData/")
 (defonce wikidata-base-image-url "https://commons.wikimedia.org/wiki/File:")
 (defonce sill-contributors-url "https://raw.githubusercontent.com/DISIC/sill/master/2020/sill-2020-contributeurs.csv")
+
+(defn- temp-json-file
+  "Convert `clj-vega-spec` to json and store it as tmp file."
+  [clj-vega-spec]
+  (let [tmp-file (java.io.File/createTempFile "vega." ".json")]
+    (.deleteOnExit tmp-file)
+    (with-open [file (io/writer tmp-file)]
+      (datajson/write clj-vega-spec file))
+    (.getAbsolutePath tmp-file)))
+
+(defn vega-spec [licenses]
+  {:title    "License distribution of recommended free software for the french public sector"
+   :data     {:values licenses}
+   :encoding {:x     {:field "Number" :type "quantitative"
+                      :axis  {:title "Number of software"}}
+              :y     {:field "License" :type "ordinal" :sort "-x"
+                      :axis  {:title         false
+                              :labelLimit    200
+                              :offset        10
+                              :maxExtent     100
+                              :labelFontSize 15
+                              :labelAlign    "right"}}
+              :color {:field  "License"
+                      :legend false
+                      :type   "nominal"
+                      :title  "Licenses"
+                      :scale  {:scheme "tableau20"}}}
+   :width    1200
+   :height   600
+   :mark     {:type "bar"}})
 
 ;; Keywords to ignore
 ;; "parent"
@@ -70,6 +103,31 @@
                     by-status)
      :group    (map (fn [[k v]] [k (count v)])
                     by-group)}))
+
+(defn entries-group-fn [e]
+  (or (re-find #"^GPL-3" (:l e))
+      (re-find #"^GPL-2" (:l e))
+      (re-find #"^LGPL-2" (:l e))
+      (re-find #"^AGPL" (:l e))
+      (re-find #"^Apache" (:l e))
+      (re-find #"^BSD" (:l e))
+      (re-find #"^MPL" (:l e))
+      (re-find #"^MIT" (:l e))
+      (re-find #"^EPL" (:l e))
+      (re-find #"^Artistic" (:l e))
+      (re-find #"^CPA" (:l e))
+      (re-find #"^CC" (:l e))))
+
+(defn vega-chart! [entries]
+  (let [entries-2020 (filter #(re-find #"2020" (:y %)) entries)
+        spec         (map (fn [[k v]]
+                            (let [k (if (= "" k) "Unspecified" k)]
+                              {:License k :Number (count v)}))
+                          (clojure.set/rename-keys
+                           (group-by entries-group-fn entries-2020)
+                           {nil "Unspecified"}))]
+    (sh/sh "vl2svg" (temp-json-file (vega-spec spec))
+           "sill-licenses.svg")))
 
 (defn wd-get-data
   "For a wikidata entity, fetch data needed for the SILL."
@@ -144,7 +202,11 @@
           (json/generate-string
            (sill-stats entries)))
     (println "Updated sill-stats.json")
+    (vega-chart! entries)
+    (println "Updated sill-licenses.svg")
     (spit "sill.json"
           (json/generate-string
            (sill-plus-wikidata entries)))
     (println "Updated sill.json")))
+
+;; (-main)
