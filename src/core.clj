@@ -236,8 +236,8 @@
     (println "Updated sill-licenses.svg")
     (vega-years-chart! entries)
     (println "Updated sill-years.svg")
-    ;; (spit "sill.json"
-    ;;       (json/generate-string
-    ;;        (sill-plus-wikidata entries)))
-    ;; (println "Updated sill.json")
+    (spit "sill.json"
+          (json/generate-string
+           (sill-plus-wikidata entries)))
+    (println "Updated sill.json")
     (System/exit 0)))
