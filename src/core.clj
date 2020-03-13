@@ -76,6 +76,7 @@
       (re-find #"^CPA" (:l e))
       (re-find #"^EPL" (:l e))
       (re-find #"^EUPL" (:l e))
+      (re-find #"^etalab" (:l e))
       (re-find #"^GPL-2" (:l e))
       (re-find #"^GPL-3" (:l e))
       (re-find #"^LGPL-2" (:l e))
