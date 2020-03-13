@@ -81,7 +81,8 @@
       (re-find #"^GPL-3" (:l e))
       (re-find #"^LGPL-2" (:l e))
       (re-find #"^MIT" (:l e))
-      (re-find #"^MPL" (:l e))))
+      (re-find #"^MPL" (:l e))
+      (re-find #"^OLDAP" (:l e))))
 
 (defn get-years-count [entries]
   (let [all   (filter #(= (:s %) "R") entries)
