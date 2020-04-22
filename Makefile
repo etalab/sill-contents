@@ -1,2 +1,2 @@
 all:
-	cp -f *json *svg docs/
+	mv -f *json *svg docs/
