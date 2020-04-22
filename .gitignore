@@ -1,7 +1,5 @@
 .cpcache/
 classes/
 .nrepl-port
-*.json
 sill-data
 .eastwood
-*.svg
