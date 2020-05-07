@@ -203,7 +203,7 @@
   [p claims]
   (:value (:datavalue (:mainsnak (first (p claims))))))
 
-(defn wd-last-first-value
+(defn wd-get-last-value
   "Get the first value of list of claims for property p."
   [p claims]
   (:value (:datavalue (:mainsnak (last (p claims))))))
