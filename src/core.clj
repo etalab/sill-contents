@@ -203,11 +203,6 @@
   [p claims]
   (:value (:datavalue (:mainsnak (first (p claims))))))
 
-(defn wd-get-last-value
-  "Get the first value of list of claims for property p."
-  [p claims]
-  (:value (:datavalue (:mainsnak (last (p claims))))))
-
 ;; Other properties to consider:
 ;; - P178: developer
 ;; - P275: license
@@ -227,7 +222,7 @@
                    {:logo    (when (not-empty logo-claim)
                                (wc-get-image-url-from-wm-filename logo-claim))
                     :website (wd-get-first-value :P856 claims)
-                    :sources (wd-get-last-value :P1324 claims)
+                    :sources (wd-get-first-value :P1324 claims)
                     :doc     (wd-get-first-value :P2078 claims)
                     :frama   {:encoded-name (codec/form-encode frama "UTF-8")
                               :name         frama}
