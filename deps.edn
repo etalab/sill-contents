@@ -1,6 +1,6 @@
 {:version     "0.1.0"
  :description "Generate data for https://sill.etalab.gouv.fr"
- :url         "https://github.com/etalab/codegouvfr-data"
+ :url         "https://github.com/etalab/sill-data"
  :license     {:name "Eclipse Public License - v 2.0"
                :url  "http://www.eclipse.org/legal/epl-v20.html"}
 
