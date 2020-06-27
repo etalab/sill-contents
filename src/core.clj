@@ -198,10 +198,13 @@
            first
            :content))))
 
-(defn wd-get-first-value
-  "Get the first value of list of claims for property p."
-  [p claims]
-  (:value (:datavalue (:mainsnak (first (p claims))))))
+(defn wd-get-value [p claims]
+  (let [pc      (p claims)
+        pc-pref (filter #(= (:rank %) "preferred") pc)]
+    (-> (if (not-empty pc-pref) (first pc-pref) (first pc))
+        :mainsnak
+        :datavalue
+        :value)))
 
 ;; Other properties to consider:
 ;; - P178: developer
@@ -216,14 +219,14 @@
           (let [data       (wd-get-data w)
                 claims     (:claims data)
                 descs      (:descriptions data)
-                logo-claim (wd-get-first-value :P154 claims)
-                frama      (wd-get-first-value :P4107 claims)]
+                logo-claim (wd-get-value :P154 claims)
+                frama      (wd-get-value :P4107 claims)]
             (merge entry
                    {:logo    (when (not-empty logo-claim)
                                (wc-get-image-url-from-wm-filename logo-claim))
-                    :website (wd-get-first-value :P856 claims)
-                    :sources (wd-get-first-value :P1324 claims)
-                    :doc     (wd-get-first-value :P2078 claims)
+                    :website (wd-get-value :P856 claims)
+                    :sources (wd-get-value :P1324 claims)
+                    :doc     (wd-get-value :P2078 claims)
                     :frama   {:encoded-name (codec/form-encode frama "UTF-8")
                               :name         frama}
                     :fr-desc (if-let [d (:value (:fr descs))] (s/capitalize d))
