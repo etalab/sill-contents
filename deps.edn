@@ -6,10 +6,10 @@
 
  :deps {org.clojure/clojure             {:mvn/version "1.10.1"}
         org.martinklepsch/clj-http-lite {:mvn/version "0.4.3"}
-        hickory                         {:mvn/version "0.7.1"}
-        semantic-csv                    {:mvn/version "0.2.0"}
+        hickory/hickory                 {:mvn/version "0.7.1"}
+        semantic-csv/semantic-csv       {:mvn/version "0.2.0"}
         ring/ring-codec                 {:mvn/version "1.1.2"}
-        cheshire                        {:mvn/version "5.10.0"}}
+        cheshire/cheshire               {:mvn/version "5.10.0"}}
 
  :aliases {:native-image
            {:main-opts ["-m clj.native-image core"
@@ -25,7 +25,7 @@
                         "-H:Name=sill-data"]
             :jvm-opts  ["-Dclojure.compiler.direct-linking=true"]
             :extra-deps
-            {clj.native-image
+            {clj.native-image/clj.native-image
              {:git/url "https://github.com/taylorwood/clj.native-image.git"
               :sha     "602587dfb5243ea8c72ed3e967c37c1f9d611723"}}}}}
 
