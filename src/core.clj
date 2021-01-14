@@ -1,4 +1,4 @@
-;; Copyright (c) 2020 DINUM, Bastien Guerry <bastien.guerry@data.gouv.fr>
+;; Copyright (c) 2020-2021 DINUM, Bastien Guerry <bastien.guerry@data.gouv.fr>
 ;; SPDX-License-Identifier: EPL-2.0
 ;; License-Filename: LICENSE
 
@@ -88,16 +88,17 @@
   (let [all   (filter #(= (:s %) "R") entries)
         y2018 (count (filter #(re-find #"2018" (:y %)) all))
         y2019 (count (filter #(re-find #"2019" (:y %)) all))
-        y2020 (count (filter #(re-find #"2020" (:y %)) all))]
-    [["2018" y2018] ["2019" y2019] ["2020" y2020]]))
+        y2020 (count (filter #(re-find #"2020" (:y %)) all))
+        y2021 (count (filter #(re-find #"2021" (:y %)) all))]
+    [["2018" y2018] ["2019" y2019] ["2020" y2020] ["2021" y2021]]))
 
 (defn sill-stats [entries]
-  (let [entries-2020 (filter #(re-find #"2020" (:y %)) entries)
-        by-license   (group-by :l entries-2020)
-        by-status    (group-by :s entries-2020)
-        by-group     (group-by :g entries-2020)]
+  (let [entries    (filter #(re-find #"2021" (:y %)) entries)
+        by-license (group-by :l entries)
+        by-status  (group-by :s entries)
+        by-group   (group-by :g entries)]
     (letfn [(cnt [m] (map (fn [[k v]] [k (count v)]) m))]
-      {:total    (count entries-2020)
+      {:total    (count entries)
        :years    (get-years-count entries)
        :licenses (cnt by-license)
        :status   (cnt by-status)
@@ -133,13 +134,13 @@
    :mark     {:type "bar" :tooltip {:content "data"}}})
 
 (defn vega-licenses-chart! [entries]
-  (let [entries-2020
-        (filter #(re-find #"2020" (:y %)) entries)
+  (let [entries
+        (filter #(re-find #"2021" (:y %)) entries)
         spec (map (fn [[k v]]
                     (let [k (if (= "" k) "Unspecified" k)]
                       {:License k :Number (count v)}))
                   (clojure.set/rename-keys
-                   (group-by group-by-licenses-family entries-2020)
+                   (group-by group-by-licenses-family entries)
                    {nil "Unspecified"}))]
     (sh/sh "vl2svg" (temp-json-file (vega-licenses-spec spec))
            "sill-licenses.svg")))
