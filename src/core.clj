@@ -37,6 +37,7 @@
    :nom               :i
    :parent            :p
    :public            :a
+   :support           :su
    :secteur           :se
    :similaire-a       :si
    :statut            :s
