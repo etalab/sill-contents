@@ -40,7 +40,6 @@
    :support           :su
    :secteur           :se
    :similaire-a       :si
-   :statut            :s
    :version           :v
    :wikidata          :w
    })
@@ -86,23 +85,20 @@
       (re-find #"^OLDAP" (:l e))))
 
 (defn get-years-count [entries]
-  (let [all   (filter #(= (:s %) "R") entries)
-        y2018 (count (filter #(re-find #"2018" (:y %)) all))
-        y2019 (count (filter #(re-find #"2019" (:y %)) all))
-        y2020 (count (filter #(re-find #"2020" (:y %)) all))
-        y2021 (count (filter #(re-find #"2021" (:y %)) all))]
+  (let [y2018 (count (filter #(re-find #"2018" (:y %)) entries))
+        y2019 (count (filter #(re-find #"2019" (:y %)) entries))
+        y2020 (count (filter #(re-find #"2020" (:y %)) entries))
+        y2021 (count (filter #(re-find #"2021" (:y %)) entries))]
     [["2018" y2018] ["2019" y2019] ["2020" y2020] ["2021" y2021]]))
 
 (defn sill-stats [entries]
   (let [entries    (filter #(re-find #"2021" (:y %)) entries)
         by-license (group-by :l entries)
-        by-status  (group-by :s entries)
         by-group   (group-by :g entries)]
     (letfn [(cnt [m] (map (fn [[k v]] [k (count v)]) m))]
       {:total    (count entries)
        :years    (get-years-count entries)
        :licenses (cnt by-license)
-       :status   (cnt by-status)
        :group    (cnt by-group)})))
 
 (defn- temp-json-file
