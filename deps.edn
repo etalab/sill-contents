@@ -12,7 +12,7 @@
         cheshire/cheshire               {:mvn/version "5.10.0"}}
 
  :aliases {:native-image
-           {:main-opts ["-m clj.native-image core"
+           {:main-opts ["-m" "clj.native-image" "core"
                         ;; "--verbose"
                         "--no-fallback"
                         "--report-unsupported-elements-at-runtime"
