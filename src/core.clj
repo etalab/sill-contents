@@ -34,6 +34,7 @@
    :fonction          :f
    :groupe            :g
    :licence           :l
+   :label             :la
    :nom               :i
    :parent            :p
    :public            :a
