@@ -40,6 +40,7 @@
    :public            :a
    :support           :su
    :secteur           :se
+   :statut            :st
    :similaire-a       :si
    :version_min       :v-
    :version_max       :v+
