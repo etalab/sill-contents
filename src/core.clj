@@ -228,8 +228,8 @@
                     :doc     (wd-get-value :P2078 claims)
                     :frama   {:encoded-name (codec/form-encode frama "UTF-8")
                               :name         frama}
-                    :fr-desc (if-let [d (:value (:fr descs))] (s/capitalize d))
-                    :en-desc (if-let [d (:value (:en descs))] (s/capitalize d))}))
+                    :fr-desc (when-let [d (:value (:fr descs))] (s/capitalize d))
+                    :en-desc (when-let [d (:value (:en descs))] (s/capitalize d))}))
           entry)
         (dissoc :w))))
 
