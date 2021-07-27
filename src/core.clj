@@ -41,7 +41,8 @@
    :support           :su
    :secteur           :se
    :similaire-a       :si
-   :version           :v
+   :version_min       :v-
+   :version_max       :v+
    :wikidata          :w
    })
 
