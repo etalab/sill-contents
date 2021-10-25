@@ -8,24 +8,27 @@
         org.martinklepsch/clj-http-lite {:mvn/version "0.4.3"}
         hickory/hickory                 {:mvn/version "0.7.1"}
         semantic-csv/semantic-csv       {:mvn/version "0.2.0"}
-        ring/ring-codec                 {:mvn/version "1.1.3"}
+        ring/ring-codec                 {:mvn/version "1.2.0"}
         cheshire/cheshire               {:mvn/version "5.10.1"}}
 
- :aliases {:native-image
-           {:main-opts ["-m" "clj.native-image" "core"
-                        ;; "--verbose"
-                        "--no-fallback"
-                        "--report-unsupported-elements-at-runtime"
-                        "--initialize-at-build-time"
-                        ;; Allow https get
-                        "-H:EnableURLProtocols=https"
-                        ;; Display backtraces
-                        "-H:+ReportExceptionStackTraces"
-                        ;; Optional native image name override
-                        "-H:Name=sill-data"]
-            :jvm-opts  ["-Dclojure.compiler.direct-linking=true"]
-            :extra-deps
-            {clj.native-image/clj.native-image
-             {:git/url "https://github.com/taylorwood/clj.native-image.git"
-              :sha     "602587dfb5243ea8c72ed3e967c37c1f9d611723"}}}}}
-
+ :aliases
+ {:uberdeps {:replace-deps  {uberdeps/uberdeps {:mvn/version "1.0.4"}}
+             :replace-paths []
+             :main-opts     ["-m" "uberdeps.uberjar"]}
+  :native-image
+  {:main-opts ["-m" "clj.native-image" "core"
+               ;; "--verbose"
+               "--no-fallback"
+               "--report-unsupported-elements-at-runtime"
+               "--initialize-at-build-time"
+               ;; Allow https get
+               "-H:EnableURLProtocols=https"
+               ;; Display backtraces
+               "-H:+ReportExceptionStackTraces"
+               ;; Optional native image name override
+               "-H:Name=sill-data"]
+   :jvm-opts  ["-Dclojure.compiler.direct-linking=true"]
+   :extra-deps
+   {clj.native-image/clj.native-image
+    {:git/url "https://github.com/taylorwood/clj.native-image.git"
+     :sha     "4604ae76855e09cdabc0a2ecc5a7de2cc5b775d6"}}}}}
