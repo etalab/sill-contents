@@ -20,6 +20,17 @@ Assuming GraalVM >19.3 is installed:
     clj -A:native-image
 
 
+# Contribute
+
+The development of this repository happens on [the SourceHut
+repository](https://git.sr.ht/~etalab/sill-data).  The code is also published on [GitHub](https://github.com/etalab/sill-data) to reach more
+developers.
+
+Your help is welcome.  You can contribute with bug reports, patches,
+feature requests or general questions by sending an email to
+`~etalab@lists.sr.ht`.
+
+
 # License
 
 2020-2021 DINUM, Bastien Guerry.
