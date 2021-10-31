@@ -16,10 +16,10 @@
             [clojure.data.json :as datajson])
   (:gen-class))
 
-(defonce sill-url "https://raw.githubusercontent.com/DISIC/sill/master/2020/sill-2020.csv")
+(defonce sill-url "https://git.sr.ht/~etalab/sill/blob/master/sill.csv")
 (defonce wikidata-base-url "https://www.wikidata.org/wiki/Special:EntityData/")
 (defonce wikidata-base-image-url "https://commons.wikimedia.org/wiki/File:")
-(defonce sill-contributors-url "https://raw.githubusercontent.com/DISIC/sill/master/2020/sill-2020-contributeurs.csv")
+(defonce sill-contributors-url "https://git.sr.ht/~etalab/sill/blob/master/contributeurs.csv")
 
 ;; Keywords to ignore
 ;; "parent"
