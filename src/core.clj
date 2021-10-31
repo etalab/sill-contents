@@ -185,7 +185,8 @@
     (-> (try (http/get (str wikidata-base-url entity ".json")
                        http-get-params)
              (catch Exception _
-               (println "Cannot reach Wikidata url")))
+               (println
+                (format "Cannot reach Wikidata url for %s" entity))))
         :body
         (json/parse-string true)
         :entities
