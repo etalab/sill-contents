@@ -17,9 +17,11 @@
   (:gen-class))
 
 (defonce sill-url "https://git.sr.ht/~etalab/sill/blob/master/sill.csv")
+(defonce sill-updates-url "https://git.sr.ht/~etalab/sill/blob/master/updates.csv")
+(defonce sill-contributors-url "https://git.sr.ht/~etalab/sill/blob/master/contributeurs.csv")
+
 (defonce wikidata-base-url "https://www.wikidata.org/wiki/Special:EntityData/")
 (defonce wikidata-base-image-url "https://commons.wikimedia.org/wiki/File:")
-(defonce sill-contributors-url "https://git.sr.ht/~etalab/sill/blob/master/contributeurs.csv")
 
 ;; Keywords to ignore
 ;; "parent"
@@ -55,6 +57,15 @@
   (spit "sill-contributors.json"
         (json/generate-string
          (try (semantic-csv/slurp-csv sill-contributors-url)
+              (catch Exception _
+                (println "Cannot reach SILL csv URL"))))))
+
+(defn sill-updates-to-json
+  "Spit sill-updates.json from `sill-updates-url`."
+  []
+  (spit "sill-updates.json"
+        (json/generate-string
+         (try (semantic-csv/slurp-csv sill-updates-url)
               (catch Exception _
                 (println "Cannot reach SILL csv URL"))))))
 
@@ -238,6 +249,8 @@
 (defn -main []
   (sill-contributors-to-json)
   (println "Updated sill-contributors.json")
+  (sill-updates-to-json)
+  (println "Updated sill-updates.json")
   (let [entries (get-sill-entries)]
     (spit "sill-stats.json"
           (json/generate-string
