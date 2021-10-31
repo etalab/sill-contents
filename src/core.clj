@@ -5,7 +5,7 @@
 (ns core
   (:require [cheshire.core :as json]
             [semantic-csv.core :as semantic-csv]
-            [clj-http.lite.client :as http]
+            [clj-http.client :as http]
             [ring.util.codec :as codec]
             [clojure.string :as s]
             [clojure.set]
