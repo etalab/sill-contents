@@ -1,5 +1,5 @@
 
-# Generate SILL data
+# Consolidate and generate SILL data
 
 "SILL" stands for "Socle Interministériel de Logiciels Libres", which
 refers to the list of recommended free softwares for the [french]
@@ -14,17 +14,10 @@ It takes SILL data from [this csv file](https://git.sr.ht/~etalab/sill/blob/mast
 adding wikidata additional information when available.
 
 
-# Generate the binary file
-
-Assuming GraalVM is installed:
-
-    clj -A:native-image
-
-
 # Contribute
 
 The development of this repository happens on [the SourceHut
-repository](https://git.sr.ht/~etalab/sill-data).  The code is also published on [GitHub](https://github.com/etalab/sill-data) to reach more
+repository](https://git.sr.ht/~etalab/sill-consolidate-data).  The code is also published on [GitHub](https://github.com/etalab/sill-data) to reach more
 developers.
 
 Your help is welcome.  You can contribute with bug reports, patches,
