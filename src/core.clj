@@ -12,6 +12,8 @@
             [hickory.core :as h]
             [hickory.select :as hs]
             [clojure.java.io :as io]
+            [clojure.instant :as instant]
+            [clj-rss.core :as rss]
             [clojure.java.shell :as sh]
             [clojure.data.json :as datajson])
   (:gen-class))
@@ -247,11 +249,44 @@
           entry)
         (dissoc :w))))
 
+(defn sill-updates []
+  (try (semantic-csv/slurp-csv sill-updates-url)
+       (catch Exception e (println "Can't get latest SILL updates: " e))))
+
+(defn make-rss-feed
+  "Generate a RSS feed from `sill-updates`."
+  []
+  (->>
+   (rss/channel-xml
+    ;; FIXME: really hardcode title/description in french?
+    {:title       "sill.etalab.gouv.fr - mises à jour du SILL"
+     :link        "https://sill.etalab.gouv.fr/updates.xml"
+     :description "Mises à jour du SILL"}
+    (sort-by
+     :pubDate
+     (map (fn [item]
+            (let [id   (:id item)
+                  link (if (not (= id 0))
+                         ;; FIXME: remove /fr/ ?
+                         (format "https://sill.etalab.gouv.fr/fr/software?id=%s" id)
+                         "https://sill.etalab.gouv.fr")]
+              {:title       (format "%s - %s" (:logiciel item) (:type item))
+               :link        link
+               :description (:commentaire item)
+               :author      "Etalab"
+               :pubDate     (instant/read-instant-date
+                             (str (first (re-find #"(\d+)-(\d+)-(\d+)" (:date item)))
+                                  "T10:00:00Z"))}))
+          (sill-updates))))
+   (spit "updates.xml")))
+
 (defn -main []
   (sill-contributors-to-json)
   (println "Updated sill-contributors.json")
   (sill-updates-to-json)
   (println "Updated sill-updates.json")
+  (make-rss-feed)
+  (println "Updated updates.xml")
   (let [entries (get-sill-entries)]
     (spit "sill-stats.json"
           (json/generate-string
