@@ -6,3 +6,4 @@ sill-data
 todo.org
 .lsp/
 *.txt
+target/
