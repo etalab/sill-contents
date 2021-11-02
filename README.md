@@ -2,8 +2,8 @@
 # Consolidate and generate SILL data
 
 "SILL" stands for "Socle Interministériel de Logiciels Libres", which
-refers to the list of recommended free softwares for the [french]
-public sector.
+refers to the list of recommended free software for the french public
+sector.
 
 You can browse it on [sill.etalab.gouv.fr](https://sill.etalab.gouv.fr).
 
