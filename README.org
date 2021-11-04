@@ -20,10 +20,10 @@ developers.
 
 Your help is welcome.  You can contribute with bug reports, patches,
 feature requests or general questions by sending an email to
-=~etalab/logiciels-libres@lists.sr.ht=.
+[[mailto:~etalab/logiciels-libres@lists.sr.ht][~etalab/logiciels-libres@lists.sr.ht]].
 
 * License
 
-2020-2021 DINUM, Bastien Guerry.
+2020-2021 DINUM, Etalab.
 
 This application is published under the EPL 2.0 license.
