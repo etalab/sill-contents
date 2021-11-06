@@ -1,8 +1,9 @@
 [![img](https://img.shields.io/badge/Licence-EPL-orange.svg?style=flat-square)](https://git.sr.ht/~etalab/sill-consolidate-data/blob/master/LICENSE)
 
+
 # Consolidate and generate SILL data
 
-SILL stands for "Socle Interministériel de Logiciels Libres", which
+`SILL` stands for "Socle Interministériel de Logiciels Libres", which
 refers to the list of recommended free software for the french public
 sector.
 
@@ -14,6 +15,7 @@ are used by the SILL frontend.
 It takes SILL data from [this csv file](https://git.sr.ht/~etalab/sill/blob/master/sill.csv) and convert it to `json`, also
 adding wikidata additional information when available.
 
+
 # Contribute
 
 The development of this repository happens on [the SourceHut
@@ -23,6 +25,7 @@ developers.
 Your help is welcome.  You can contribute with bug reports, patches,
 feature requests or general questions by sending an email to
 [~etalab/logiciels-libres@lists.sr.ht](mailto:~etalab/logiciels-libres@lists.sr.ht).
+
 
 # License
 
