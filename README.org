@@ -28,4 +28,4 @@ feature requests or general questions by sending an email to
 
 2020-2021 DINUM, Etalab.
 
-This application is published under the [[LICENSE][EPL 2.0 license]].
+This application is published under the [[https://git.sr.ht/~etalab/sill-consolidate-data/blob/master/LICENSE][EPL 2.0 license]].
