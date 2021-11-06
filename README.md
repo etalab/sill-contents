@@ -29,5 +29,7 @@ feature requests or general questions by sending an email to
 
 2020-2021 DINUM, Etalab.
 
+[![img](https://img.shields.io/badge/Licence-EPL-orange.svg?style=flat-square)](https://git.sr.ht/~etalab/sill-consolidate-data/blob/master/LICENSE)
+
 This application is published under the EPL 2.0 license.
 
