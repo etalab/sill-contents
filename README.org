@@ -1,3 +1,5 @@
+[[https://git.sr.ht/~etalab/sill-consolidate-data/blob/master/LICENSE][https://img.shields.io/badge/Licence-EPL-orange.svg?style=flat-square]]
+
 * Consolidate and generate SILL data
 
 "SILL" stands for "Socle Interministériel de Logiciels Libres", which
@@ -25,7 +27,5 @@ feature requests or general questions by sending an email to
 * License
 
 2020-2021 DINUM, Etalab.
-
-[[https://git.sr.ht/~etalab/sill-consolidate-data/blob/master/LICENSE][https://img.shields.io/badge/Licence-EPL-orange.svg?style=flat-square]]
 
 This application is published under the EPL 2.0 license.
