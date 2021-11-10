@@ -3,7 +3,7 @@
 
 # Consolidate and generate SILL data
 
-`SILL` stands for "Socle Interministériel de Logiciels Libres", which
+`SILL` stands for "socle interministériel de logiciels libres", which
 refers to the list of recommended free software for the french public
 sector.
 
@@ -12,8 +12,10 @@ You can browse it on [sill.etalab.gouv.fr](https://sill.etalab.gouv.fr).
 This repository contains the code to generate various `json` files that
 are used by the SILL frontend.
 
-It takes SILL data from [this csv file](https://git.sr.ht/~etalab/sill/blob/master/sill.csv) and convert it to `json`, also
-adding wikidata additional information when available.
+It takes SILL data from [this csv file](https://git.sr.ht/~etalab/sill/blob/master/sill.csv) and convert it to this [json](https://code.gouv.fr/data/sill.json),
+also adding Wikidata additional information when available.
+
+The SILL data are published under the [Open License 2.0](https://www.etalab.gouv.fr/licence-ouverte-open-licence).
 
 
 # Contribute
