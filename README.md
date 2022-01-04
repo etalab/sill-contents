@@ -38,7 +38,7 @@ questions by writing to [~etalab/codegouvfr-devel@lists.sr.ht](mailto:~etalab/co
 
 # License
 
-2020-2021 DINUM, Etalab.
+2020-2022 DINUM, Etalab.
 
 This application is published under the [EPL 2.0 license](https://git.sr.ht/~etalab/sill-consolidate-data/blob/master/LICENSE).
 

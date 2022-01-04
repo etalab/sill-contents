@@ -1,4 +1,4 @@
-;; Copyright (c) 2020-2021 DINUM, Bastien Guerry <bastien.guerry@data.gouv.fr>
+;; Copyright (c) 2020-2022 DINUM, Bastien Guerry <bastien.guerry@data.gouv.fr>
 ;; SPDX-License-Identifier: EPL-2.0
 ;; License-Filename: LICENSE
 
