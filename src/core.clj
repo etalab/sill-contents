@@ -104,11 +104,12 @@
   (let [y2018 (count (filter #(re-find #"2018" (:y %)) entries))
         y2019 (count (filter #(re-find #"2019" (:y %)) entries))
         y2020 (count (filter #(re-find #"2020" (:y %)) entries))
-        y2021 (count (filter #(re-find #"2021" (:y %)) entries))]
-    [["2018" y2018] ["2019" y2019] ["2020" y2020] ["2021" y2021]]))
+        y2021 (count (filter #(re-find #"2021" (:y %)) entries))
+        y2022 (count (filter #(re-find #"2022" (:y %)) entries))]
+    [["2018" y2018] ["2019" y2019] ["2020" y2020] ["2021" y2021] ["2022" y2022]]))
 
 (defn sill-stats [entries]
-  (let [entries    (filter #(re-find #"2021" (:y %)) entries)
+  (let [entries    (filter #(re-find #"2022" (:y %)) entries)
         by-license (group-by :l entries)
         by-group   (group-by :g entries)]
     (letfn [(cnt [m] (map (fn [[k v]] [k (count v)]) m))]
@@ -148,7 +149,7 @@
 
 (defn vega-licenses-chart! [entries]
   (let [entries
-        (filter #(re-find #"2021" (:y %)) entries)
+        (filter #(re-find #"2022" (:y %)) entries)
         spec (map (fn [[k v]]
                     (let [k (if (= "" k) "Unspecified" k)]
                       {:License k :Number (count v)}))
