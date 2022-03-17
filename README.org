@@ -21,7 +21,7 @@ The SILL data are published under the [[https://www.etalab.gouv.fr/licence-ouver
 The development of this repository happens on [[https://git.sr.ht/~etalab/sill-consolidate-data][the SourceHut
 repository]].  
 
-The code is also published on [[https://github.com/etalab/sill-data/][GitHub]] to reach more developers, but
+The code is also published on [[https://github.com/etalab/sill-contents/][GitHub]] to reach more developers, but
 please do not send pull requests there.
 
 You can send *patches* by email using [[https://git-send-email.io/][git-send-email.io]].  For your
