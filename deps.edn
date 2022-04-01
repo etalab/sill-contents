@@ -4,13 +4,13 @@
  :license     {:name "Eclipse Public License - v 2.0"
                :url  "http://www.eclipse.org/legal/epl-v20.html"}
 
- :deps {org.clojure/clojure             {:mvn/version "1.10.3"}
+ :deps {org.clojure/clojure             {:mvn/version "1.11.0"}
         org.martinklepsch/clj-http-lite {:mvn/version "0.4.3"}
         hickory/hickory                 {:mvn/version "0.7.1"}
         semantic-csv/semantic-csv       {:mvn/version "0.2.0"}
         ring/ring-codec                 {:mvn/version "1.2.0"}
-        cheshire/cheshire               {:mvn/version "5.10.1"}
-        clj-rss/clj-rss                 {:mvn/version "0.2.7"}}
+        cheshire/cheshire               {:mvn/version "5.10.2"}
+        clj-rss/clj-rss                 {:mvn/version "0.3.0"}}
 
  :aliases
  {:run      {:main-opts ["-m" "core"]}
