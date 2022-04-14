@@ -275,9 +275,10 @@
                :link        link
                :description (:commentaire item)
                :author      "Etalab"
-               :pubDate     (instant/read-instant-date
-                             (str (first (re-find #"(\d+)-(\d+)-(\d+)" (:date item)))
-                                  "T10:00:00Z"))}))
+               :pubDate     (.toInstant
+                             (instant/read-instant-date
+                              (str (first (re-find #"(\d+)-(\d+)-(\d+)" (:date item)))
+                                   "T10:00:00Z")))}))
           (sill-updates))))
    (spit "updates.xml")))
 
