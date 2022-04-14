@@ -4,7 +4,7 @@
  :license     {:name "Eclipse Public License - v 2.0"
                :url  "http://www.eclipse.org/legal/epl-v20.html"}
 
- :deps {org.clojure/clojure             {:mvn/version "1.11.0"}
+ :deps {org.clojure/clojure             {:mvn/version "1.11.1"}
         org.martinklepsch/clj-http-lite {:mvn/version "0.4.3"}
         hickory/hickory                 {:mvn/version "0.7.1"}
         semantic-csv/semantic-csv       {:mvn/version "0.2.0"}
