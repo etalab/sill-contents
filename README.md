@@ -1,5 +1,7 @@
 [![img](https://img.shields.io/badge/Licence-EPL-orange.svg?style=flat-square)](https://git.sr.ht/~etalab/sill-consolidate-data/blob/master/LICENSE)
 
+ℹ️ **This repository is now archived.**
+
 
 # Consolidate and generate SILL data
 
@@ -21,11 +23,10 @@ The SILL data are published under the [Open License 2.0](https://www.etalab.gouv
 # Contributing
 
 The development of this repository happens on [the SourceHut
-repository](https://git.sr.ht/~etalab/sill-consolidate-data).
+repository](https://git.sr.ht/~etalab/sill-consolidate-data).  
 
-The code is also published on
-[GitHub](https://github.com/etalab/sill-contents/) to reach more
-developers, but please do not send pull requests there.
+The code is also published on [GitHub](https://github.com/etalab/sill-contents/) to reach more developers, but
+please do not send pull requests there.
 
 You can send **patches** by email using [git-send-email.io](https://git-send-email.io/).  For your
 patches to be processed correctly, configure your local copy with
@@ -42,3 +43,4 @@ questions by writing to [~etalab/codegouvfr-devel@lists.sr.ht](mailto:~etalab/co
 2020-2022 DINUM, Etalab.
 
 This application is published under the [EPL 2.0 license](https://git.sr.ht/~etalab/sill-consolidate-data/blob/master/LICENSE).
+

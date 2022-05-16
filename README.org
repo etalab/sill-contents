@@ -1,5 +1,7 @@
 [[https://git.sr.ht/~etalab/sill-consolidate-data/blob/master/LICENSE][https://img.shields.io/badge/Licence-EPL-orange.svg?style=flat-square]]
 
+ℹ️ *This repository is now archived.*
+
 * Consolidate and generate SILL data
 
 =SILL= stands for "socle interministériel de logiciels libres", which
